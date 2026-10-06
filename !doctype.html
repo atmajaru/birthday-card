@@ -1,0 +1,363 @@
+#   
+<!doctype html>  
+<html lang="ru">  
+<head>  
+<meta charset="utf-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">  
+<meta name="theme-color" content="#090d2b">  
+<title>Письмо для Тебя</title>  
+<style>  
+:root{  
+  --bg:#080d2c; --bg2:#151844; --paper:#f7f5fb; --ink:#272454;  
+  --purple:#9b70d7; --purple2:#7654b2; --cream:#fff8ed;  
+}  
+*{box-sizing:border-box}  
+html,body{margin:0;min-height:100%;font-family:Georgia,"Times New Roman",serif;background:var(--bg);color:var(--ink)}  
+body{overflow-x:hidden}  
+button{font:inherit;border:0;cursor:pointer;-webkit-tap-highlight-color:transparent}  
+.screen{  
+  min-height:100svh; padding:24px 16px 38px; position:relative; overflow:hidden;  
+  background:  
+    radial-gradient(circle at 80% 10%,rgba(162,154,224,.18),transparent 22%),  
+    radial-gradient(circle at 15% 75%,rgba(115,97,188,.15),transparent 25%),  
+    linear-gradient(145deg,#090d2b,#11143c 55%,#080b27);  
+}  
+.stars,.stars:before,.stars:after{content:"";position:absolute;inset:0;pointer-events:none}  
+.stars{opacity:.85;background-image:  
+ radial-gradient(circle at 8% 20%,#fff 0 1px,transparent 2px),  
+ radial-gradient(circle at 18% 68%,#fff 0 1px,transparent 2px),  
+ radial-gradient(circle at 35% 17%,#fff 0 1px,transparent 2px),  
+ radial-gradient(circle at 54% 26%,#fff 0 1px,transparent 2px),  
+ radial-gradient(circle at 73% 16%,#fff 0 1px,transparent 2px),  
+ radial-gradient(circle at 92% 28%,#fff 0 1px,transparent 2px),  
+ radial-gradient(circle at 80% 70%,#fff 0 1px,transparent 2px),  
+ radial-gradient(circle at 29% 86%,#fff 0 1px,transparent 2px),  
+ radial-gradient(circle at 63% 88%,#fff 0 1px,transparent 2px);  
+ background-size:100% 100%}  
+.stars:before{filter:blur(1px);background:  
+ radial-gradient(circle at 14% 28%,rgba(255,255,255,.9),transparent 1.5px),  
+ radial-gradient(circle at 70% 35%,rgba(255,230,160,.9),transparent 1.8px),  
+ radial-gradient(circle at 43% 72%,rgba(255,255,255,.8),transparent 1.5px)}  
+.container{position:relative;z-index:2;max-width:760px;margin:auto}  
+.center{display:flex;flex-direction:column;align-items:center}  
+.envelope-wrap{height:410px;width:min(92vw,600px);display:grid;place-items:center;position:relative;margin:70px auto 0}  
+.envelope{  
+  width:86%;height:245px;position:relative;background:linear-gradient(145deg,#e9e8ef,#fff);  
+  border-radius:17px;box-shadow:0 22px 45px rgba(0,0,0,.3), inset 0 0 0 1px #c9c7d3;  
+  transition:.45s transform;  
+}  
+.envelope:before,.envelope:after{content:"";position:absolute;inset:0;pointer-events:none}  
+.envelope:before{clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);background:#f4f3f8;border-radius:17px}  
+.envelope:after{clip-path:polygon(0 0,50% 52%,100% 0);background:#e5e4eb;border-radius:17px}  
+.seal{  
+  position:absolute;z-index:4;left:50%;top:50%;transform:translate(-50%,-50%);  
+  width:94px;height:94px;border-radius:50%;display:grid;place-items:center;  
+  color:#5e438b;font-size:38px;background:radial-gradient(circle,#b58ce5,#8e61c7 70%);  
+  border:6px solid #9c6ed0;box-shadow:0 4px 8px rgba(38,20,70,.35),inset 0 0 0 2px rgba(255,255,255,.2);  
+  transition:transform .22s, opacity .35s;  
+}  
+.seal small{font-size:12px;position:absolute;bottom:18px;opacity:.55}  
+.envelope.shake{animation:shake .42s}  
+.envelope.open .seal{animation:sealBreak .5s forwards}  
+@keyframes shake{0%,100%{transform:translateX(0) rotate(0)}25%{transform:translateX(-8px) rotate(-1deg)}50%{transform:translateX(8px) rotate(1deg)}75%{transform:translateX(-5px)}}  
+@keyframes sealBreak{0%{transform:translate(-50%,-50%) scale(1)}45%{transform:translate(-50%,-50%) scale(1.12) rotate(-8deg)}100%{transform:translate(-50%,-50%) scale(.1) rotate(35deg);opacity:0}}  
+.envelope.open{transform:translateY(-10px)}  
+.tap-note{font-style:italic;color:#ddd8ef;font-size:25px;margin-top:-20px}  
+.letter-stage{display:none;min-height:100svh;padding-bottom:45px}  
+.letter-stage.show{display:block}  
+.letter{  
+  margin:26px auto 0;max-width:660px;border-radius:25px;background:  
+  radial-gradient(circle at 20% 20%,rgba(160,130,205,.07),transparent 20%),var(--paper);  
+  box-shadow:0 18px 45px rgba(0,0,0,.35);padding:42px 28px 32px;position:relative;  
+  transform:translateY(70px) rotate(1deg);opacity:0;  
+}  
+.letter.fly{animation:flyin .9s cubic-bezier(.2,.85,.2,1) forwards}  
+@keyframes flyin{0%{opacity:0;transform:translateY(110px) rotate(7deg) scale(.78)}60%{opacity:1;transform:translateY(-10px) rotate(-1deg) scale(1.02)}100%{opacity:1;transform:translateY(0) rotate(0) scale(1)}}  
+.hand{font-family:"Comic Sans MS","Segoe Print",cursive}  
+.kicker{color:#a477d2;font-size:24px;margin:0 0 28px}  
+.letter h1{font-weight:500;font-size:44px;margin:0 0 24px}  
+.letter p{font-size:22px;line-height:1.55;margin:0 0 25px}  
+.sign{text-align:right;font-size:25px;color:#7763a9;margin-top:35px}  
+.actions{display:flex;gap:12px;max-width:660px;margin:22px auto 0;align-items:stretch}  
+.action{  
+  min-height:62px;border-radius:19px;padding:14px 18px;font-weight:700;font-size:20px;  
+  transition:.35s;box-shadow:0 8px 18px rgba(0,0,0,.2)  
+}  
+.take{background:#ffd97e;color:#2e2755;flex:1;white-space:nowrap}  
+.plans{background:#181943;color:#ddd8ef;border:1px solid #5c5a92;flex:1}  
+.plans.hide{display:none}  
+.plans.shrink{flex:0 0 0;width:0;padding:0;opacity:0;overflow:hidden}  
+.menu{display:none;max-width:660px;margin:18px auto 0;background:rgba(247,245,251,.97);border-radius:25px;padding:24px;color:var(--ink)}  
+.menu.show{display:block;animation:fade .35s}  
+.menu h2{text-align:center;margin:0 0 18px;font-weight:500;font-size:32px}  
+.menu-grid{display:grid;gap:12px}  
+.menu-option{padding:18px;border-radius:17px;background:#eee9f7;text-align:left;font-size:20px;color:var(--ink);border:2px solid transparent}  
+.menu-option:active,.menu-option.selected{border-color:var(--purple);background:#e5daf7}  
+.menu-note{text-align:center;margin:14px 0 0;color:#77708e}  
+@keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}  
+.date-screen{display:none;min-height:100svh;padding:34px 16px 50px}  
+.date-screen.show{display:block}  
+.date-title{text-align:center;color:#f6efff;font-size:38px;font-weight:500;margin:22px 0 30px}  
+.date-card{max-width:660px;margin:auto;background:rgba(247,245,251,.97);border-radius:26px;padding:24px}  
+.wheels{display:flex;justify-content:center;gap:12px;position:relative;margin:8px auto 25px}  
+.wheel{width:45%;max-width:230px;height:210px;overflow-y:auto;scroll-snap-type:y mandatory;scrollbar-width:none;border-radius:18px;background:#eeeaf5;padding:75px 0}  
+.wheel::-webkit-scrollbar{display:none}  
+.wheel-item{text-align:center;font-size:25px;padding:11px 8px;scroll-snap-align:center;color:#918ba4}  
+.wheel-item.active{color:#292452;font-weight:700}  
+.wheel-highlight{position:absolute;left:5%;right:5%;top:76px;height:55px;border-top:1px solid #b7acd0;border-bottom:1px solid #b7acd0;pointer-events:none}  
+.date-result{text-align:center;font-size:22px;margin:5px 0 20px}  
+.share-row{display:flex;gap:10px;flex-wrap:wrap}  
+.share{flex:1 1 45%;border-radius:17px;padding:16px;font-size:18px;font-weight:700;background:#8f65c5;color:white;border:none;cursor:pointer}  
+.back{margin-top:10px;width:100%;background:#e7e1ef;color:#353052}  
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);background:#17183f;color:white;padding:13px 18px;border-radius:14px;opacity:0;pointer-events:none;transition:.3s;z-index:20}  
+.toast.show{opacity:1;transform:translateX(-50%)}  
+@media(max-width:520px){  
+  .envelope-wrap{margin-top:55px;height:370px}  
+  .envelope{height:220px}  
+  .seal{width:84px;height:84px}  
+  .letter{padding:34px 22px 28px}  
+  .letter h1{font-size:38px}  
+  .letter p{font-size:20px}  
+  .actions{gap:8px}  
+  .action{font-size:17px;padding:12px 10px}  
+  .kicker{font-size:21px}  
+}  
+</style>  
+</head>  
+<body>  
+<section id="intro" class="screen">  
+  <div class="stars"></div>  
+  <div class="container">  
+    <div class="center">  
+      <div class="envelope-wrap" id="envelopeWrap">  
+        <button class="envelope" id="envelope" aria-label="Нажми на конверт, чтобы сломать печать">  
+          <div class="seal">M<small>✦</small></div>  
+        </button>  
+      </div>  
+      <div class="tap-note" id="tapNote">сломай печать</div>  
+    </div>  
+  </div>  
+</section>  
+<section id="letterStage" class="screen letter-stage">  
+  <div class="stars"></div>  
+  <div class="container">  
+    <article class="letter" id="letter">  
+      <p class="kicker hand" id="letterKicker"></p>  
+      <h1 id="letterTitle"></h1>  
+      <p class="hand" id="letterP1"></p>  
+      <p class="hand" id="letterP2"></p>  
+      <p class="hand" id="letterP3"></p>  
+      <p class="sign hand" id="letterSign"></p>  
+    </article>  
+    <div class="actions" id="actions">  
+      <button class="action take" id="takeBtn">Забирай меня 🎂</button>  
+      <button class="action plans" id="plansBtn">У меня планы</button>  
+    </div>  
+    <div class="menu" id="menu">  
+      <h2>Выбери, что делаем</h2>  
+      <div class="menu-grid">  
+        <button class="menu-option" id="option1" data-choice="Ужин">🍽️ Ужин</button>  
+        <button class="menu-option" id="option2" data-choice="Кино">🎬 Кино</button>  
+        <button class="menu-option" id="option3" data-choice="Прогулка">🌙 Прогулка</button>  
+      </div>  
+      <p class="menu-note">Можно выбрать только один вариант.</p>  
+    </div>  
+  </div>  
+</section>  
+<section id="dateScreen" class="screen date-screen">  
+  <div class="stars"></div>  
+  <div class="container">  
+    <h1 class="date-title">когда?</h1>  
+    <div class="date-card">  
+      <div class="wheels">  
+        <div class="wheel-highlight"></div>  
+        <div class="wheel" id="dayWheel"></div>  
+        <div class="wheel" id="monthWheel"></div>  
+      </div>  
+      <div class="date-result" id="dateResult"></div>  
+      <div class="share-row">  
+        <button class="share" id="shareBtn">Поделиться</button>  
+        <button class="share back" id="backBtn">← изменить выбор</button>  
+      </div>  
+    </div>  
+  </div>  
+</section>  
+<div class="toast" id="toast"></div>  
+<script>  
+const DEFAULTS = {  
+  name: 'Мохнарой',  
+  title: 'С днём рождения!',  
+  p1: 'Сегодня твой день, и мне не хотелось отделываться сообщением среди сотни таких же.',  
+  p2: 'Поэтому — целая эмоция: с конвертом, печатью и конфетти. Желать «всего-всего» не буду: ты и так знаешь, чего я тебе желаю. Скажу проще — спасибо, что ты есть, и оставайся такой же.',  
+  p3: 'А вместо открытки я дарю тебе вечер. Твой день — твои правила: выбери, что делаем, и назначь день и час сама.',  
+  sign: 'твой друг А.',  
+  opt1: 'Ужин',  
+  opt2: 'Кино',  
+  opt3: 'Прогулка'  
+};  
+let config = loadConfig();  
+const envelope = document.getElementById('envelope');  
+const tapNote = document.getElementById('tapNote');  
+const intro = document.getElementById('intro');  
+const letterStage = document.getElementById('letterStage');  
+const letter = document.getElementById('letter');  
+const plansBtn = document.getElementById('plansBtn');  
+const takeBtn = document.getElementById('takeBtn');  
+const menu = document.getElementById('menu');  
+const dateScreen = document.getElementById('dateScreen');  
+const toast = document.getElementById('toast');  
+function loadConfig(){  
+  try{  
+    const saved = JSON.parse(localStorage.getItem('birthdayCardConfig') || 'null');  
+    return {...DEFAULTS, ...(saved || {})};  
+  }catch(e){ return {...DEFAULTS}; }  
+}  
+function applyConfig(){  
+  document.getElementById('letterKicker').textContent = `С днём рождения, ${config.name}`;  
+  document.getElementById('letterTitle').textContent = config.title;  
+  document.getElementById('letterP1').textContent = config.p1;  
+  document.getElementById('letterP2').textContent = config.p2;  
+  document.getElementById('letterP3').textContent = config.p3;  
+  document.getElementById('letterSign').textContent = config.sign;  
+  const opts = [  
+    [document.getElementById('option1'), config.opt1, '🎮'],  
+    [document.getElementById('option2'), config.opt2, '🎬'],  
+    [document.getElementById('option3'), config.opt3, '👫']  
+  ];  
+  opts.forEach(([el,text,emoji])=>{  
+    el.dataset.choice = text;  
+    el.textContent = `${emoji} ${text}`;  
+  });  
+}  
+applyConfig();  
+let taps = 0;  
+envelope.addEventListener('click', () => {  
+  if (taps >= 3) return;  
+  taps++;  
+  envelope.classList.remove('shake');  
+  void envelope.offsetWidth;  
+  envelope.classList.add('shake');  
+  if (taps === 1) tapNote.textContent = 'ещё раз…';  
+  if (taps === 2) tapNote.textContent = 'ещё чуть-чуть…';  
+  if (taps === 3) {  
+    tapNote.textContent = 'печать сломана';  
+    envelope.classList.add('open');  
+    setTimeout(() => {  
+      intro.style.display = 'none';  
+      letterStage.classList.add('show');  
+      letter.classList.add('fly');  
+      window.scrollTo({top:0,behavior:'instant'});  
+    }, 650);  
+  }  
+});  
+let planClicks = 0;  
+const planTexts = ['планы важнее', 'точно?', 'я не верю'];  
+plansBtn.addEventListener('click', () => {  
+  planClicks++;  
+  if (planClicks <= 3) {  
+    plansBtn.textContent = planTexts[planClicks-1];  
+    if (planClicks === 1) takeBtn.style.flex = '1.25';  
+    else if (planClicks === 2) takeBtn.style.flex = '1.55';  
+    else {  
+      takeBtn.style.flex = '1';  
+      plansBtn.classList.add('shrink');  
+      setTimeout(()=>plansBtn.classList.add('hide'),350);  
+    }  
+  }  
+});  
+takeBtn.addEventListener('click', () => {  
+  menu.classList.add('show');  
+  menu.scrollIntoView({behavior:'smooth',block:'center'});  
+});  
+document.querySelectorAll('.menu-option').forEach(btn => {  
+  btn.addEventListener('click', () => {  
+    document.querySelectorAll('.menu-option').forEach(x=>x.classList.remove('selected'));  
+    btn.classList.add('selected');  
+    choice = btn.dataset.choice;  
+    setTimeout(() => openDateScreen(), 280);  
+  });  
+});  
+let choice = '';  
+function openDateScreen(){  
+  letterStage.style.display='none';  
+  dateScreen.classList.add('show');  
+  buildWheels();  
+  window.scrollTo({top:0,behavior:'instant'});  
+}  
+const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];  
+function buildWheels(){  
+  const now = new Date();  
+  const dayWheel = document.getElementById('dayWheel');  
+  const monthWheel = document.getElementById('monthWheel');  
+  dayWheel.innerHTML='';  
+  monthWheel.innerHTML='';  
+  for(let d=1;d<=31;d++){  
+    const b=document.createElement('div'); b.className='wheel-item'; b.textContent=d; b.dataset.value=d;  
+    dayWheel.appendChild(b);  
+  }  
+  months.forEach((m,i)=>{  
+    const b=document.createElement('div'); b.className='wheel-item'; b.textContent=m; b.dataset.value=i;  
+    monthWheel.appendChild(b);  
+  });  
+  scrollToValue(dayWheel,String(Math.min(now.getDate(),31)));  
+  scrollToValue(monthWheel,String(now.getMonth()));  
+  [dayWheel,monthWheel].forEach(w=>w.addEventListener('scroll',()=>updateDate(),{passive:true}));  
+  updateDate();  
+}  
+function scrollToValue(wheel,val){  
+  const el=[...wheel.children].find(x=>x.dataset.value===val);  
+  if(el) el.scrollIntoView({block:'center'});  
+}  
+function nearestValue(wheel){  
+  const r=wheel.getBoundingClientRect();  
+  const center=r.top+r.height/2;  
+  let best=null,dist=Infinity;  
+  [...wheel.children].forEach(el=>{  
+    const er=el.getBoundingClientRect();  
+    const d=Math.abs((er.top+er.height/2)-center);  
+    if(d<dist){dist=d;best=el}  
+  });  
+  return best?.dataset.value;  
+}  
+function updateDate(){  
+  const d=nearestValue(document.getElementById('dayWheel')) || '1';  
+  const m=nearestValue(document.getElementById('monthWheel')) || '0';  
+  document.getElementById('dateResult').textContent=`${d} ${months[Number(m)]} — ${choice}`;  
+}  
+document.getElementById('shareBtn').addEventListener('click', async () => {  
+  const text = makeShareText();  
+  // Сначала пробуем системное поделиться  
+  if (navigator.share) {  
+    try {  
+      await navigator.share({ title: 'Мой вечер', text });  
+      return;  
+    } catch (e) {  
+      // Если пользователь отменил или ошибка — продолжаем и копируем  
+    }  
+  }  
+  // Иначе копируем текст в буфер обмена  
+  try {  
+    await navigator.clipboard.writeText(text);  
+    showToast('Текст скопирован ✅ Отправь его в любой мессенджер');  
+  } catch (e) {  
+    // Если и копирование не удалось — показываем текст  
+    alert(text);  
+  }  
+});  
+function makeShareText(){  
+  const d=nearestValue(document.getElementById('dayWheel')) || '1';  
+  const m=nearestValue(document.getElementById('monthWheel')) || '0';  
+  return `${config.name}, я выбрала: ${choice}. Дата: ${d} ${months[Number(m)]}. 💜`;  
+}  
+document.getElementById('backBtn').addEventListener('click',()=>{  
+  dateScreen.classList.remove('show');  
+  letterStage.style.display='';  
+  menu.scrollIntoView({behavior:'smooth',block:'center'});  
+});  
+function showToast(t){  
+  toast.textContent=t; toast.classList.add('show');  
+  setTimeout(()=>toast.classList.remove('show'),2500);  
+}  
+</script>  
+</body>  
+</html>  

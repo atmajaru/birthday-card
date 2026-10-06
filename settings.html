@@ -1,0 +1,108 @@
+
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>⚙️ Настройки открытки</title>
+<style>
+body{font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;background:#080d2c;color:#292452;padding:20px;min-height:100vh}
+.panel{max-width:680px;margin:0 auto;background:#f7f5fb;border-radius:25px;padding:30px;box-shadow:0 25px 70px rgba(0,0,0,.45)}
+h1{text-align:center;margin-top:0}
+.hint{color:#746d86;line-height:1.45}
+label{display:block;margin:16px 0;font-weight:700}
+input,textarea{display:block;width:100%;margin-top:7px;padding:13px 14px;border-radius:13px;border:1px solid #c8bfd8;background:white;color:#292452;font:inherit;font-size:16px}
+textarea{resize:vertical;min-height:80px}
+.btns{display:flex;gap:12px;margin-top:25px}
+button{flex:1;padding:15px;border-radius:15px;font-weight:700;font-size:17px;border:none;cursor:pointer}
+.save{background:#8f65c5;color:white}
+.reset{background:#e7e1ef;color:#353052}
+.open-link{display:block;text-align:center;margin-top:25px;color:#8f65c5;font-size:18px;text-decoration:none}
+hr{border:none;border-top:1px solid #ddd;margin:20px 0}
+</style>
+</head>
+<body>
+<div class="panel">
+  <h1>✨ Настройки открытки</h1>
+  <p class="hint">Заполни поля → нажми «Сохранить» → открой готовую открытку — всё подставится автоматически!</p>
+
+  <label>Имя
+    <input id="cfgName" type="text" placeholder="Мохнарой">
+  </label>
+  <label>Заголовок
+    <input id="cfgTitle" type="text" placeholder="С днём рождения!">
+  </label>
+  <label>Вступление
+    <textarea id="cfgP1"></textarea>
+  </label>
+  <label>Основной текст
+    <textarea id="cfgP2"></textarea>
+  </label>
+  <label>Текст про вечер
+    <textarea id="cfgP3"></textarea>
+  </label>
+  <label>Подпись
+    <input id="cfgSign" type="text" placeholder="твой друг А.">
+  </label>
+  <hr>
+  <label>Вариант 1
+    <input id="cfgOpt1" type="text" placeholder="Ужин">
+  </label>
+  <label>Вариант 2
+    <input id="cfgOpt2" type="text" placeholder="Кино">
+  </label>
+  <label>Вариант 3
+    <input id="cfgOpt3" type="text" placeholder="Прогулка">
+  </label>
+
+  <div class="btns">
+    <button class="save" id="saveBtn">💾 Сохранить</button>
+    <button class="reset" id="resetBtn">🗑 Сбросить</button>
+  </div>
+
+  <a class="open-link" href="index.html">→ Открыть готовую открытку</a>
+</div>
+
+<script>
+const DEFAULTS = {
+  name: 'Мохнарой', title: 'С днём рождения!',
+  p1: 'Сегодня твой день, и мне не хотелось отделываться сообщением среди сотни таких же.',
+  p2: 'Поэтому — целая эмоция: с конвертом, печатью и конфетти. Желать «всего-всего» не буду: ты и так знаешь, чего я тебе желаю. Скажу проще — спасибо, что ты есть, и оставайся такой же.',
+  p3: 'А вместо открытки я дарю тебе вечер. Твой день — твои правила: выбери, что делаем, и назначь день и час сама.',
+  sign: 'твой друг А.', opt1: 'Ужин', opt2: 'Кино', opt3: 'Прогулка'
+};
+const fields = {
+  name: document.getElementById('cfgName'),
+  title: document.getElementById('cfgTitle'),
+  p1: document.getElementById('cfgP1'),
+  p2: document.getElementById('cfgP2'),
+  p3: document.getElementById('cfgP3'),
+  sign: document.getElementById('cfgSign'),
+  opt1: document.getElementById('cfgOpt1'),
+  opt2: document.getElementById('cfgOpt2'),
+  opt3: document.getElementById('cfgOpt3')
+};
+function load(){
+  try{
+    const s = JSON.parse(localStorage.getItem('birthdayCardConfig')||'null');
+    Object.keys(fields).forEach(k=>fields[k].value = s?.[k]??DEFAULTS[k]);
+  }catch{
+    Object.keys(fields).forEach(k=>fields[k].value = DEFAULTS[k]);
+  }
+}
+document.getElementById('saveBtn').addEventListener('click',()=>{
+  const data = {};
+  Object.keys(fields).forEach(k=>data[k]=fields[k].value.trim());
+  localStorage.setItem('birthdayCardConfig', JSON.stringify(data));
+  alert('✅ Сохранено! Открывай готовую открытку — всё уже подставлено.');
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(confirm('Сбросить все изменения?')){
+    localStorage.removeItem('birthdayCardConfig');
+    Object.keys(fields).forEach(k=>fields[k].value = DEFAULTS[k]);
+  }
+});
+load();
+</script>
+</body>
+</html>
